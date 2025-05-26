@@ -100,21 +100,26 @@ struct EmojiBar: View {
                     },
                     touchDragState: touchDragState,
                     leadingPadding: index == 0 ? 16 : 12, // isFirst
-                    trailingPadding: index == emojis.count - 1 ? 16 : 0 // isLast
+                    trailingPadding: 0 // isLast
                 )
             }
             
-//            Button(action: {
-//                showEmojiPicker = true
-//            }) {
-//                Image(systemName: "plus")
-//                    .font(.system(size: 32))
-//                    .foregroundColor(.gray)
-//            }
-//            .buttonStyle(PlainButtonStyle())
-//            .emojiPicker(isPresented: $showEmojiPicker, selectedEmoji: $selectedEmoji)
-//            .accessibilityLabel("Open Emoji Picker")
+            InnerEmoji(
+                content: {
+                    Image(systemName: "plus")
+                        .font(.system(size: 32))
+                        .foregroundColor(.secondary)
+
+                },
+                touchDragState: touchDragState,
+                leadingPadding: 12,
+                trailingPadding: 16
+            )
+            .accessibilityLabel("Open Emoji Picker")
             
+            // action: {
+            //                showEmojiPicker = true
+            //            }
         }
         .background(
             Capsule()
