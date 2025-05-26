@@ -16,9 +16,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		08FE127F2DE4F221004F245C /* contextmenuwithreaction */ = {
+		08FE127F2DE4F221004F245C /* ContextMenuWithReaction */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = contextmenuwithreaction;
+			path = ContextMenuWithReaction;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -39,7 +39,7 @@
 		08FE12742DE4F221004F245C = {
 			isa = PBXGroup;
 			children = (
-				08FE127F2DE4F221004F245C /* contextmenuwithreaction */,
+				08FE127F2DE4F221004F245C /* ContextMenuWithReaction */,
 				08FE127E2DE4F221004F245C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,7 +68,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				08FE127F2DE4F221004F245C /* contextmenuwithreaction */,
+				08FE127F2DE4F221004F245C /* ContextMenuWithReaction */,
 			);
 			name = contextmenuwithreaction;
 			packageProductDependencies = (
@@ -94,7 +94,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 08FE12782DE4F221004F245C /* Build configuration list for PBXProject "contextmenuwithreaction" */;
+			buildConfigurationList = 08FE12782DE4F221004F245C /* Build configuration list for PBXProject "ContextMenuWithReaction" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -316,7 +316,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		08FE12782DE4F221004F245C /* Build configuration list for PBXProject "contextmenuwithreaction" */ = {
+		08FE12782DE4F221004F245C /* Build configuration list for PBXProject "ContextMenuWithReaction" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				08FE12862DE4F221004F245C /* Debug */,

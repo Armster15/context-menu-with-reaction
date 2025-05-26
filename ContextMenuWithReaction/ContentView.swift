@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  contextmenuwithreaction
+//  ContextMenuWithReaction
 //
 //  Created by Armaan Aggarwal on 5/26/25.
 //
