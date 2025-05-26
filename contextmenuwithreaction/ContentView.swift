@@ -86,6 +86,7 @@ struct EmojiBar: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 .emojiPicker(isPresented: $showEmojiPicker, selectedEmoji: $selectedEmoji)
+                .accessibilityLabel("Open Emoji Picker")
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
