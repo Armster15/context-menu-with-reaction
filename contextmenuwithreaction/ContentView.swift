@@ -94,12 +94,11 @@ struct EmojiBar: View {
         HStack(spacing: 0) {
             ForEach(Array(emojis.enumerated()), id: \.element) { index, emoji in
                 InnerEmoji(
-                    emoji: emoji,
-                    isHighlighted: highlightedEmoji == emoji,
-                    touchDragState: touchDragState,
-                    onHighlightChange: { highlightedEmoji in
-                        self.highlightedEmoji = highlightedEmoji
+                    content: {
+                        Text(emoji)
+                            .font(.system(size: 32))
                     },
+                    touchDragState: touchDragState,
                     leadingPadding: index == 0 ? 16 : 12, // isFirst
                     trailingPadding: index == emojis.count - 1 ? 16 : 0 // isLast
                 )
@@ -124,26 +123,24 @@ struct EmojiBar: View {
     }
 }
 
-struct InnerEmoji: View {
-    let emoji: String
-    let isHighlighted: Bool
+struct InnerEmoji<Content: View>: View {
+    let content: () -> Content
     let touchDragState: TouchDragState
-    let onHighlightChange: (String?) -> Void
     let leadingPadding: CGFloat
     let trailingPadding: CGFloat
-    
+
     @State private var emojiFrame: CGRect = .zero
-    
+    @State private var isHighlighted: Bool = false
+
     var body: some View {
-        Button(emoji) {
-            // Handle emoji selection/reaction here
-            print("Selected emoji: \(emoji)")
+        Button(action: {
+            print("Selected emoji or icon")
+        }) {
+            content()
         }
         .padding(.vertical, 8)
         .padding(.leading, leadingPadding)
         .padding(.trailing, trailingPadding)
-        
-        .font(.system(size: 32))
         .buttonStyle(PlainButtonStyle())
         .scaleEffect(isHighlighted ? 1.5 : 1.0)
         .offset(y: isHighlighted ? -25 : 0)
@@ -161,13 +158,13 @@ struct InnerEmoji: View {
                         if state.isDragging {
                             let isCurrentlyOver = emojiFrame.contains(state.location)
                             if isCurrentlyOver && !isHighlighted {
-                                onHighlightChange(emoji)
-                                // Optional: Add haptic feedback
-                                let impactFeedback = UIImpactFeedbackGenerator(style: .light)
-                                impactFeedback.impactOccurred()
+                                isHighlighted = true
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                             } else if !isCurrentlyOver && isHighlighted {
-                                onHighlightChange(nil)
+                                isHighlighted = false
                             }
+                        } else {
+                            isHighlighted = false
                         }
                     }
             }
