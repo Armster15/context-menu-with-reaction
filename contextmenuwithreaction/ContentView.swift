@@ -10,8 +10,6 @@ import MenuWithAView
 import MCEmojiPicker
 
 struct ContentView: View {
-    @State private var showAlert = false
-    
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
             Text("Hello")
@@ -56,6 +54,8 @@ struct ContentView: View {
 
 struct EmojiBar: View {
     let emojis = ["😀", "😁", "😂", "😍", "😌"]
+    
+    // MCEmojiPicker
     @State private var showEmojiPicker = false
     @State private var selectedEmoji: String = ""
     
@@ -68,13 +68,7 @@ struct EmojiBar: View {
             // Foreground with emojis
             HStack(spacing: 12) {
                 ForEach(emojis, id: \.self) { emoji in
-                    Button(action: {
-                        // Emoji tap action
-                    }) {
-                        Text(emoji)
-                            .font(.system(size: 32))
-                    }
-                    .buttonStyle(PlainButtonStyle())
+                    InnerEmoji(emoji: emoji)
                 }
 
                 Button(action: {
@@ -93,6 +87,16 @@ struct EmojiBar: View {
             .background(Color.white.opacity(0.5))
             .clipShape(Capsule())
         }
+    }
+}
+
+struct InnerEmoji: View {
+    let emoji: String
+    
+    var body: some View {
+        Button(emoji) {}
+            .font(.system(size: 32))
+            .buttonStyle(PlainButtonStyle())
     }
 }
 
