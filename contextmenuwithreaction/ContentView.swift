@@ -119,7 +119,7 @@ struct EmojiBar: View {
         }
         .background(
             Capsule()
-                .fill(Color.white.opacity(0.5))
+                .fill(Color(UIColor.secondarySystemBackground))
         )
     }
 }
