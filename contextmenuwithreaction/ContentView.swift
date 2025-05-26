@@ -52,14 +52,18 @@ struct ContentView: View {
     }
 }
 
+struct TouchDragState: Equatable {
+    var isDragging: Bool = false
+    var location: CGPoint = .zero
+}
+
 struct EmojiBar: View {
     let emojis = ["😀", "😁", "😂", "😍", "😌"]
     
     @State private var showEmojiPicker = false
     @State private var selectedEmoji: String = ""
     
-    @State private var isDragging = false
-    @State private var dragLocation: CGPoint = .zero
+    @State private var touchDragState = TouchDragState()
     @State private var highlightedEmoji: String? = nil
     
     var body: some View {
@@ -71,11 +75,10 @@ struct EmojiBar: View {
                 .gesture(
                     DragGesture(minimumDistance: 0, coordinateSpace: .global)
                         .onChanged { value in
-                            isDragging = true
-                            dragLocation = value.location
+                            touchDragState = TouchDragState(isDragging: true, location: value.location)
                         }
                         .onEnded { _ in
-                            isDragging = false
+                            touchDragState.isDragging = false
                             highlightedEmoji = nil
                         }
                 )
@@ -93,8 +96,7 @@ struct EmojiBar: View {
                 InnerEmoji(
                     emoji: emoji,
                     isHighlighted: highlightedEmoji == emoji,
-                    dragLocation: dragLocation,
-                    isDragging: isDragging,
+                    touchDragState: touchDragState,
                     onHighlightChange: { highlightedEmoji in
                         self.highlightedEmoji = highlightedEmoji
                     },
@@ -125,8 +127,7 @@ struct EmojiBar: View {
 struct InnerEmoji: View {
     let emoji: String
     let isHighlighted: Bool
-    let dragLocation: CGPoint
-    let isDragging: Bool
+    let touchDragState: TouchDragState
     let onHighlightChange: (String?) -> Void
     let leadingPadding: CGFloat
     let trailingPadding: CGFloat
@@ -156,9 +157,9 @@ struct InnerEmoji: View {
                     .onChange(of: geometry.frame(in: .global)) { newFrame in
                         emojiFrame = newFrame
                     }
-                    .onChange(of: dragLocation) { location in
-                        if isDragging {
-                            let isCurrentlyOver = emojiFrame.contains(location)
+                    .onChange(of: touchDragState) { state in
+                        if state.isDragging {
+                            let isCurrentlyOver = emojiFrame.contains(state.location)
                             if isCurrentlyOver && !isHighlighted {
                                 onHighlightChange(emoji)
                                 // Optional: Add haptic feedback
