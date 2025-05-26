@@ -100,7 +100,10 @@ struct EmojiBar: View {
                     },
                     touchDragState: touchDragState,
                     leadingPadding: index == 0 ? 16 : 12, // isFirst
-                    trailingPadding: 0 // isLast
+                    trailingPadding: 0, // isLast
+                    action: {
+                        selectedEmoji = emoji
+                    }
                 )
             }
             
@@ -109,17 +112,23 @@ struct EmojiBar: View {
                     Image(systemName: "plus")
                         .font(.system(size: 32))
                         .foregroundColor(.secondary)
-
                 },
                 touchDragState: touchDragState,
                 leadingPadding: 12,
-                trailingPadding: 16
+                trailingPadding: 16,
+                action: {
+                    showEmojiPicker = true
+                }
             )
             .accessibilityLabel("Open Emoji Picker")
-            
-            // action: {
-            //                showEmojiPicker = true
-            //            }
+            .emojiPicker(
+                isPresented: $showEmojiPicker,
+                selectedEmoji: $selectedEmoji
+            )
+            // When selectedEmoji state changes (useEffect(() => {}, [selectedEmoji]))
+            .onChange(of: selectedEmoji) {
+                print(selectedEmoji)
+            }
         }
         .background(
             Capsule()
@@ -133,49 +142,56 @@ struct InnerEmoji<Content: View>: View {
     let touchDragState: TouchDragState
     let leadingPadding: CGFloat
     let trailingPadding: CGFloat
+    let action: () -> Void
 
     @State private var emojiFrame: CGRect = .zero
     @State private var isHighlighted: Bool = false
 
     var body: some View {
-        Button(action: {
-            print("Selected emoji or icon")
-        }) {
-            content()
-        }
-        .padding(.vertical, 8)
-        .padding(.leading, leadingPadding)
-        .padding(.trailing, trailingPadding)
-        .buttonStyle(PlainButtonStyle())
-        .scaleEffect(isHighlighted ? 1.5 : 1.0)
-        .offset(y: isHighlighted ? -25 : 0)
-        .animation(.easeInOut(duration: 0.1), value: isHighlighted)
-        .background(
-            GeometryReader { geometry in
-                Color.clear
-                    .onAppear {
-                        emojiFrame = geometry.frame(in: .global)
-                    }
-                    .onChange(of: geometry.frame(in: .global)) { newFrame in
-                        emojiFrame = newFrame
-                    }
-                    .onChange(of: touchDragState) { state in
-                        if state.isDragging {
-                            let isCurrentlyOver = emojiFrame.contains(state.location)
-                            if isCurrentlyOver && !isHighlighted {
-                                isHighlighted = true
-                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                            } else if !isCurrentlyOver && isHighlighted {
-                                isHighlighted = false
-                            }
-                        } else {
-                            isHighlighted = false
+        content()
+            .padding(.vertical, 8)
+            .padding(.leading, leadingPadding)
+            .padding(.trailing, trailingPadding)
+            .scaleEffect(isHighlighted ? 1.5 : 1.0)
+            .offset(y: isHighlighted ? -25 : 0)
+            .animation(.easeInOut(duration: 0.1), value: isHighlighted)
+            .background(
+                GeometryReader { geometry in
+                    Color.clear
+                        .onAppear {
+                            emojiFrame = geometry.frame(in: .global)
                         }
-                    }
+                        .onChange(of: geometry.frame(in: .global)) { newFrame in
+                            emojiFrame = newFrame
+                        }
+                        .onChange(of: touchDragState) { state in
+                            if state.isDragging {
+                                let isCurrentlyOver = emojiFrame.contains(state.location)
+                                if isCurrentlyOver && !isHighlighted {
+                                    isHighlighted = true
+                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                } else if !isCurrentlyOver && isHighlighted {
+                                    isHighlighted = false
+                                }
+                            } else {
+                                // When drag ends, check if we should trigger the action
+                                let wasHighlighted = isHighlighted
+                                isHighlighted = false
+                                
+                                if wasHighlighted {
+                                    action()
+                                }
+                            }
+                        }
+                }
+            )
+            .onTapGesture {
+                // Handle simple taps
+                action()
             }
-        )
     }
 }
+
 
 // BlurView helper
 struct BlurView: UIViewRepresentable {
