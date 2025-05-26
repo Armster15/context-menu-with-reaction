@@ -1,0 +1,24 @@
+{
+  "originHash" : "c28b878762de85ca97e35d0f38983a033f88d532feb71a73c8edd2f20760b170",
+  "pins" : [
+    {
+      "identity" : "mcemojipicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/izyumkin/MCEmojiPicker",
+      "state" : {
+        "revision" : "e0b4903b75ae1cc418d276d84d1cb946b8a1d73c",
+        "version" : "1.2.3"
+      }
+    },
+    {
+      "identity" : "menuwithaview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Aeastr/MenuWithAView",
+      "state" : {
+        "revision" : "8fafbbaba91626c68ad4fc4d6a6bdcded9462d72",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}

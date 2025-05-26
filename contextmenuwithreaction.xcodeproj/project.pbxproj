@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		08FE128D2DE4F478004F245C /* MenuWithAView in Frameworks */ = {isa = PBXBuildFile; productRef = 08FE128C2DE4F478004F245C /* MenuWithAView */; };
+		08FE12902DE4FA1F004F245C /* MCEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 08FE128F2DE4FA1F004F245C /* MCEmojiPicker */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		08FE127D2DE4F221004F245C /* contextmenuwithreaction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = contextmenuwithreaction.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08FE128D2DE4F478004F245C /* MenuWithAView in Frameworks */,
+				08FE12902DE4FA1F004F245C /* MCEmojiPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,8 @@
 			);
 			name = contextmenuwithreaction;
 			packageProductDependencies = (
+				08FE128C2DE4F478004F245C /* MenuWithAView */,
+				08FE128F2DE4FA1F004F245C /* MCEmojiPicker */,
 			);
 			productName = contextmenuwithreaction;
 			productReference = 08FE127D2DE4F221004F245C /* contextmenuwithreaction.app */;
@@ -94,6 +103,10 @@
 			);
 			mainGroup = 08FE12742DE4F221004F245C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				08FE128B2DE4F478004F245C /* XCRemoteSwiftPackageReference "MenuWithAView" */,
+				08FE128E2DE4FA1F004F245C /* XCRemoteSwiftPackageReference "MCEmojiPicker" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 08FE127E2DE4F221004F245C /* Products */;
 			projectDirPath = "";
@@ -320,6 +333,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		08FE128B2DE4F478004F245C /* XCRemoteSwiftPackageReference "MenuWithAView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Aeastr/MenuWithAView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		08FE128E2DE4FA1F004F245C /* XCRemoteSwiftPackageReference "MCEmojiPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/izyumkin/MCEmojiPicker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		08FE128C2DE4F478004F245C /* MenuWithAView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 08FE128B2DE4F478004F245C /* XCRemoteSwiftPackageReference "MenuWithAView" */;
+			productName = MenuWithAView;
+		};
+		08FE128F2DE4FA1F004F245C /* MCEmojiPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 08FE128E2DE4FA1F004F245C /* XCRemoteSwiftPackageReference "MCEmojiPicker" */;
+			productName = MCEmojiPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 08FE12752DE4F221004F245C /* Project object */;
 }
