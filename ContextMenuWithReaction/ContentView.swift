@@ -6,203 +6,113 @@
 //
 
 import SwiftUI
-import MenuWithAView
-import MCEmojiPicker
+
+let CORNER_RADIUS = 20.0
+
+struct Message: Identifiable {
+    let id = UUID()
+    let text: String
+    let isSender: Bool
+}
+
+struct MessageBubble: View {
+    let message: Message
+
+    var body: some View {
+        HStack {
+            if message.isSender {
+                Spacer()
+            }
+            Text(message.text)
+                .padding(.horizontal)
+                .padding(.vertical, 15)
+                .background(
+                    message.isSender
+                    ? Color.blue
+                    : Color(UIColor.systemGray5)
+                )
+                .foregroundColor(
+                    message.isSender
+                    ? .white
+                    : Color.primary
+                )
+                .cornerRadius(CORNER_RADIUS)
+                .frame(maxWidth: 250, alignment: message.isSender ? .trailing : .leading)
+            if !message.isSender {
+                Spacer()
+            }
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 4)
+    }
+}
 
 struct ContentView: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: .zero) {
-            Text("Hello")
-                .foregroundColor(.white)
-                .font(.title)
-        }
-        .padding([.leading, .trailing], 50)
-        .padding([.top, .bottom], 20)
-        // These corner radii should match
-        .background(RoundedRectangle(cornerRadius: 50).foregroundColor(.blue))
-        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 50))
-        .contextMenu {
-            Button {
-                // action
-            } label: {
-                Label("Reply", systemImage: "arrowshape.turn.up.left")
-            }
-            
-            Button {
-                // action
-            } label: {
-                Label("Copy Text", systemImage: "doc.on.doc")
-            }
-            
-            Button(role: .destructive) {
-                // action
-            } label: {
-                Label("Delete", systemImage: "trash")
-            }
-        }
-        .contextMenuAccessory(
-            placement: .top,
-            location: .preview,
-            alignment: .center,
-            trackingAxis: .yAxis
-        ) {
-            EmojiBar()
-                .padding(16)
-        }
-    }
-}
-
-struct TouchDragState: Equatable {
-    var isDragging: Bool = false
-    var location: CGPoint = .zero
-}
-
-struct EmojiBar: View {
-    let emojis = ["😀", "😁", "😂", "😍", "😌"]
-    
-    @State private var showEmojiPicker = false
-    @State private var selectedEmoji: String = ""
-    
-    @State private var touchDragState = TouchDragState()
-    @State private var highlightedEmoji: String? = nil
-    
-    var body: some View {
-        ZStack {
-            Color.clear
-                .padding(-24)
-                .contentShape(Rectangle())
-                .zIndex(100)
-                .gesture(
-                    DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                        .onChanged { value in
-                            touchDragState = TouchDragState(isDragging: true, location: value.location)
-                        }
-                        .onEnded { _ in
-                            touchDragState.isDragging = false
-                            highlightedEmoji = nil
-                        }
-                )
-            
-            BlurView(style: .systemUltraThinMaterial)
-                .clipShape(Capsule())
-            
-            emojiBarContent
-        }
-    }
-    
-    private var emojiBarContent: some View {
-        HStack(spacing: 0) {
-            ForEach(Array(emojis.enumerated()), id: \.element) { index, emoji in
-                InnerEmoji(
-                    content: {
-                        Text(emoji)
-                            .font(.system(size: 32))
-                    },
-                    touchDragState: touchDragState,
-                    leadingPadding: index == 0 ? 16 : 12, // isFirst
-                    trailingPadding: 0, // isLast
-                    action: {
-                        selectedEmoji = emoji
-                    }
-                )
-            }
-            
-            InnerEmoji(
-                content: {
-                    Image(systemName: "plus")
-                        .font(.system(size: 32))
-                        .foregroundColor(.secondary)
-                },
-                touchDragState: touchDragState,
-                leadingPadding: 12,
-                trailingPadding: 16,
-                action: {
-                    showEmojiPicker = true
-                }
-            )
-            .accessibilityLabel("Open Emoji Picker")
-            .emojiPicker(
-                isPresented: $showEmojiPicker,
-                selectedEmoji: $selectedEmoji
-            )
-            // When selectedEmoji state changes (useEffect(() => {}, [selectedEmoji]))
-            .onChange(of: selectedEmoji) {
-                print(selectedEmoji)
-            }
-        }
-        .background(
-            Capsule()
-                .fill(Color(UIColor.secondarySystemBackground))
-        )
-    }
-}
-
-struct InnerEmoji<Content: View>: View {
-    let content: () -> Content
-    let touchDragState: TouchDragState
-    let leadingPadding: CGFloat
-    let trailingPadding: CGFloat
-    let action: () -> Void
-
-    @State private var emojiFrame: CGRect = .zero
-    @State private var isHighlighted: Bool = false
+    let messages: [Message] = [
+        Message(text: "Hey!", isSender: false),
+        Message(text: "Yo, what’s up?", isSender: true),
+        Message(text: "Not much. Just finished work.", isSender: false),
+        Message(text: "Nice, how was it?", isSender: true),
+        Message(text: "Pretty hectic. Meetings all day. 😩", isSender: false),
+        Message(text: "Oof. You need a break.", isSender: true),
+        Message(text: "Tell me about it. Coffee saved me. Again.", isSender: false),
+        Message(text: "Haha, the real MVP ☕", isSender: true),
+        Message(text: "Did you finish that UI you were working on?", isSender: false),
+        Message(text: "Almost! Just tweaking the layout for dark mode.", isSender: true),
+        Message(text: "Sweet. Can’t wait to see it.", isSender: false),
+        Message(text: "I’ll send you a screenshot in a bit.", isSender: true),
+        Message(text: "Cool. Oh btw, did you watch the new episode?", isSender: false),
+        Message(text: "Yes!! Crazy twist at the end 😱", isSender: true),
+        Message(text: "Right?! I didn’t see that coming.", isSender: false),
+        Message(text: "Same. Thought they were gonna drag it out longer.", isSender: true),
+        Message(text: "Anyway, dinner time. Let’s catch up later?", isSender: false),
+        Message(text: "Sure thing. Enjoy your food!", isSender: true),
+        Message(text: "Thanks! 😄", isSender: false)
+    ]
 
     var body: some View {
-        content()
-            .padding(.vertical, 8)
-            .padding(.leading, leadingPadding)
-            .padding(.trailing, trailingPadding)
-            .scaleEffect(isHighlighted ? 1.5 : 1.0)
-            .offset(y: isHighlighted ? -25 : 0)
-            .animation(.easeInOut(duration: 0.1), value: isHighlighted)
-            .background(
-                GeometryReader { geometry in
-                    Color.clear
-                        .onAppear {
-                            emojiFrame = geometry.frame(in: .global)
-                        }
-                        .onChange(of: geometry.frame(in: .global)) { newFrame in
-                            emojiFrame = newFrame
-                        }
-                        .onChange(of: touchDragState) { state in
-                            if state.isDragging {
-                                let isCurrentlyOver = emojiFrame.contains(state.location)
-                                if isCurrentlyOver && !isHighlighted {
-                                    isHighlighted = true
-                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                } else if !isCurrentlyOver && isHighlighted {
-                                    isHighlighted = false
-                                }
-                            } else {
-                                // When drag ends, check if we should trigger the action
-                                let wasHighlighted = isHighlighted
-                                isHighlighted = false
-                                
-                                if wasHighlighted {
-                                    action()
-                                }
+        VStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(messages) { message in
+                        MessageBubble(message: message)
+                        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: CORNER_RADIUS))
+                        .contextMenu {
+                            Button {
+                                // action
+                            } label: {
+                                Label("Reply", systemImage: "arrowshape.turn.up.left")
+                            }
+                            
+                            Button {
+                                // action
+                            } label: {
+                                Label("Copy Text", systemImage: "doc.on.doc")
+                            }
+                            
+                            Button(role: .destructive) {
+                                // action
+                            } label: {
+                                Label("Delete", systemImage: "trash")
                             }
                         }
+                        .contextMenuAccessory(
+                            placement: .top,
+                            location: .preview,
+                            alignment: .center,
+                            trackingAxis: .yAxis
+                        ) {
+                            EmojiBar()
+                                .padding(.vertical, 16)
+                        }
+                    }
                 }
-            )
-            .onTapGesture {
-                // Handle simple taps
-                action()
             }
+        }
+        .background(Color(UIColor.systemBackground))
     }
 }
 
-
-// BlurView helper
-struct BlurView: UIViewRepresentable {
-    var style: UIBlurEffect.Style = .systemMaterial
-
-    func makeUIView(context: Context) -> UIVisualEffectView {
-        UIVisualEffectView(effect: UIBlurEffect(style: style))
-    }
-
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
-}
 
 #Preview {
     ContentView()
