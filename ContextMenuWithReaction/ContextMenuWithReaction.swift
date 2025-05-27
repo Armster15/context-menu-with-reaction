@@ -41,8 +41,8 @@ public struct EmojiBar: View {
                         }
                 )
             
-            BlurView(style: .systemUltraThinMaterial)
-                .clipShape(Capsule())
+//            BlurView(style: .systemUltraThinMaterial)
+//                .clipShape(Capsule())
             
             emojiBarContent
         }
@@ -82,6 +82,7 @@ public struct EmojiBar: View {
             .emojiPicker(
                 isPresented: $showEmojiPicker,
                 selectedEmoji: $selectedEmoji
+                
             )
             // When selectedEmoji state changes (useEffect(() => {}, [selectedEmoji]))
             .onChange(of: selectedEmoji) {
@@ -91,6 +92,7 @@ public struct EmojiBar: View {
         .background(
             Capsule()
                 .fill(Color(UIColor.secondarySystemBackground))
+                .opacity(0.85)
         )
     }
 }
